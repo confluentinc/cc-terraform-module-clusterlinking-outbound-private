@@ -40,5 +40,5 @@ variable "aws_kafka_brokers" {
       ip  = string
     }))
   }))
-  description = "A list of Kafka brokers, which the object shape: { id, subnet_id, endpoints: [{ dns, port, ip }] }"
+  description = "A list of Kafka brokers, with the object shape: { id, subnet_id, endpoints: [{ host, port, ip }] }"
 }
