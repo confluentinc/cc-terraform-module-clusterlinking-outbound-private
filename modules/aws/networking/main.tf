@@ -101,7 +101,7 @@ resource "aws_vpc_endpoint_service" "brokers" {
   for_each                   = { for key, value in var.aws_kafka_brokers : "broker-${value.id}" => value }
   acceptance_required        = false
   network_load_balancer_arns = [aws_lb.brokers[each.key].arn]
-  allowed_principals         = ["*"]
+  allowed_principals         = var.cc_gateway_principal_arns
   tags = {
     Name        = "${var.name_prefix != "" ? "${var.name_prefix}-" : ""}broker-${each.value.id}-vpces"
     Description = "VPC Endpoint Service for Kafka broker ${each.value.id}, managed by Terraform"

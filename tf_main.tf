@@ -7,9 +7,11 @@ module "aws_networking" {
 
 	name_prefix = var.name_prefix
 
+	cc_gateway_principal_arns = confluent_gateway.aws["main"].aws_egress_private_link_gateway[*].principal_arn
+
 	aws_region = var.aws_region
 	aws_vpc_id = var.aws_vpc_id
-	aws_kafka_brokers = var.aws_kafka_brokers
+	aws_kafka_brokers = var.aws_kafka_brokers	
 }
 
 #

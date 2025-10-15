@@ -7,6 +7,14 @@ variable "name_prefix" {
 }
 
 #
+# Variables for Confluent specific external components.
+#
+variable "cc_gateway_principal_arns" {
+  type        = list(string)
+  description = "The ARNs of the Confluent Gateway principal(s), which are required when creating VPC Endpoint Services."
+}
+
+#
 # Variables for configuring creating VPC Endpoint Services.
 #
 variable "aws_region" {
