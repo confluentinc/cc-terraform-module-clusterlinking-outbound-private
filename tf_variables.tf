@@ -47,6 +47,7 @@ variable "aws_region" {
 variable "aws_vpc_id" {
   type        = string
   description = "The ID of the VPC where the Kafka cluster is deployed."
+  default     = ""
 
   validation {
     condition     = length(regexall("^vpc-", var.aws_vpc_id)) > 0
