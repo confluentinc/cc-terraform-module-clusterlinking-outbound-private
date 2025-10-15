@@ -17,7 +17,7 @@ variable "cc_env_id" {
 
   validation {
     condition     = length(regexall("^env-", var.cc_env_id)) > 0
-    error_message = "The provided cc_end_id '${var.cc_env_id}' is not valid. It should start with 'env-'."
+    error_message = "The provided cc_env_id '${var.cc_env_id}' is not valid. It should start with 'env-'."
   }
 }
 
