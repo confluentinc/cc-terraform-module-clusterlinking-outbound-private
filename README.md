@@ -32,7 +32,7 @@ Confluent Cloud Cluster Linking provides byte-to-byte replication between two Ap
 Apache Kafka on AWS example
 ```hcl
 module "cluster-linking-apache-kafka-aws-private-link" {
-  source = "https://github.com/confluentinc/cc-terraform-module-clusterlinking-outbound-private"
+  source = "git::https://github.com/confluentinc/cc-terraform-module-clusterlinking-outbound-private.git"
 
   name_prefix = "oss-ak"
 
@@ -82,7 +82,7 @@ module "cluster-linking-apache-kafka-aws-private-link" {
 AWS MSK example
 ```hcl
 module "cluster-linking-aws-msk-private-link" {
-  source = "https://github.com/confluentinc/cc-terraform-module-clusterlinking-outbound-private"
+  source = "git::https://github.com/confluentinc/cc-terraform-module-clusterlinking-outbound-private.git"
 
   name_prefix = "msk"
 
