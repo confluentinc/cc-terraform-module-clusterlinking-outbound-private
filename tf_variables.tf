@@ -69,7 +69,7 @@ variable "aws_vpc_id" {
   }
 }
 #
-# Cross-region isn't surrported yet, but might be enabled in the future, avoid using
+# Cross-region isn't supported yet, but might be enabled in the future, avoid using
 # these variables for now
 #
 variable "aws_enable_cross_region" {

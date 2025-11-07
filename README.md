@@ -154,7 +154,7 @@ provisioner "local-exec" {
   }
 ```
 
-This raises some inportant things to be aware of:
+This raises some important things to be aware of:
 * This creates a dependency for whatever machine executes the Terraform to have an instance of the AWS CLI available to it
 * This assumes that the machine that executes the AWS CLI command uses [credential files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
