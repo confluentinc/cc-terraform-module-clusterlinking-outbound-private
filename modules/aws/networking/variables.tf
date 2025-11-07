@@ -30,6 +30,16 @@ variable "aws_vpc_id" {
     error_message = "The provided aws_vpc_id '${var.aws_vpc_id}' is not valid. It should start with 'vpc-'."
   }
 }
+variable "aws_enable_cross_region" {
+  type        = bool
+  description = "Enabled VPC Endpoint Services and VPC Endpoints to be in different regions."
+  default     = false  
+}
+variable "aws_vpc_endpoint_service_additional_regions" {
+  type        = list(string)
+  description = "A list of additional regions for the VPC Endpoint Service when cross-region is enabled."
+  default     = []
+}
 variable "aws_kafka_brokers" {
   type = list(object({
     id = string
