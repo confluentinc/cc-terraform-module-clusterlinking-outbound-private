@@ -36,7 +36,7 @@ resource "aws_security_group_rule" "listeners" {
 
 #
 # Each broker in the cluster needs its own NLB and VPC Endpoint Service. 
-# This is because NLB's are not "Kafka aware", meaning they doen't know 
+# This is because NLB's are not "Kafka aware", meaning they don't know 
 # Kafka partition assignments or leadership, and therefore cannot 
 # intelligently route requests. 
 #

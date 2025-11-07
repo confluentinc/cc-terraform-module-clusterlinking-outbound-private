@@ -26,8 +26,8 @@ Confluent Cloud Cluster Linking provides byte-to-byte replication between two Ap
 | `use_aws` | `false` | `bool` |  | `use_azure`, `use_gcp` | Set module to create AWS specific resources |
 | `aws_region` | `""` | `string` | `use_aws` |  | The AWS region where Kafka is deployed |
 | `aws_vpc_id` | `""` | `string` | `use_aws` |  | The ID of the VPC where the Kafka cluster is deployed |
-| `aws_enable_cross_region` | `false` | `bool` | `use_aws` |  | Enable VPC Endpoint Services and VPC Endpoints to be in different regions. ***Note: this is current in testing and should not be used yet*** |
-| `aws_vpc_endpoint_service_additional_regions` | `[]` | `list(string)` | `aws_enable_cross_region` |  | A list of additional regions for the VPC Endpoint Service when aws_enable_cross_region is enabled. ***Note: this is current in testing and should not be used yet*** |
+| `aws_enable_cross_region` | `false` | `bool` | `use_aws` |  | Enable VPC Endpoint Services and VPC Endpoints to be in different regions. ***Note: this is currently in testing and should not be used yet*** |
+| `aws_vpc_endpoint_service_additional_regions` | `[]` | `list(string)` | `aws_enable_cross_region` |  | A list of additional regions for the VPC Endpoint Service when aws_enable_cross_region is enabled. ***Note: this is currently in testing and should not be used yet*** |
 | `aws_kafka_brokers` | `[]` | `list(object({ id = string, subnet_id = string, endpoints = list(object({ host = string, port = number, ip = string })) }))` | `use_aws` |  | A list of Kafka brokers, which the object shape: `{ id, subnet_id, endpoints: [{ host, port, ip }] }` |
 | `use_azure` | `false` | `bool` |  | `use_aws`, `use_gcp` | Set module to create Azure specific resources. ***Note: this is currently disabled*** |
 | `use_gcp` | `false` | `bool` |  | `use_aws`, `use_azure` | Set module to create GCP specific resources. ***Note: this is currently disabled*** |
@@ -158,4 +158,4 @@ This raises some important things to be aware of:
 * This creates a dependency for whatever machine executes the Terraform to have an instance of the AWS CLI available to it
 * This assumes that the machine that executes the AWS CLI command uses [credential files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
-Since there is no elegant way to conditionally execute this provisioner with a user-supplied flag, it's being kept. If there's any key issues with using this in the module, please open an issue so it can be address and considered for removal. 
+Since there is no elegant way to conditionally execute this provisioner with a user-supplied flag, it's being kept. If there's any key issues with using this in the module, please open an issue so it can be addressed and considered for removal. 

@@ -17,7 +17,7 @@ variable "cc_env_id" {
 
   validation {
     condition     = length(regexall("^env-", var.cc_env_id)) > 0
-    error_message = "The provided cc_end_id '${var.cc_env_id}' is not valid. It should start with 'env-'."
+    error_message = "The provided cc_env_id '${var.cc_env_id}' is not valid. It should start with 'env-'."
   }
 }
 variable "cc_cluster_id" {
@@ -92,7 +92,7 @@ variable "aws_kafka_brokers" {
       ip   = string
     }))
   }))
-  description = "A list of Kafka brokers, which the object shape: { id, subnet_id, endpoints: [{ host, port, ip }] }"
+  description = "A list of Kafka brokers, with the object shape: { id, subnet_id, endpoints: [{ host, port, ip }] }"
   default     = []
 }
 
