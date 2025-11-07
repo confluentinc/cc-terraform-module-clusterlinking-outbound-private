@@ -20,7 +20,6 @@ variable "cc_env_id" {
     error_message = "The provided cc_end_id '${var.cc_env_id}' is not valid. It should start with 'env-'."
   }
 }
-
 variable "cc_cluster_id" {
   type        = string
   description = "The ID of the Confluent target cluster."
@@ -28,6 +27,21 @@ variable "cc_cluster_id" {
   validation {
     condition     = length(regexall("^lkc-", var.cc_cluster_id)) > 0
     error_message = "The provided cc_cluster_id '${var.cc_cluster_id}' is not valid. It should start with 'lkc-'."
+  }
+}
+variable "cc_use_existing_egress_gateway" {
+  type = bool
+  description = "Whether to use an existing egress gateway instead of creating a new one."
+  default = false
+}
+variable "cc_egress_gateway_id" {
+  type        = string
+  description = "The ID of an existing Confluent egress gateway to use if cc_use_existing_egress_gateway is true."
+  default     = ""
+
+  validation {
+    condition     = length(regexall("^gw-", var.cc_egress_gateway_id)) > 0 || var.cc_egress_gateway_id == ""
+    error_message = "The provided cc_egress_gateway_id '${var.cc_egress_gateway_id}' is not valid. It should start with 'gw-'."
   }
 }
 
@@ -53,6 +67,20 @@ variable "aws_vpc_id" {
     condition     = length(regexall("^vpc-", var.aws_vpc_id)) > 0
     error_message = "The provided aws_vpc_id '${var.aws_vpc_id}' is not valid. It should start with 'vpc-'."
   }
+}
+#
+# Cross-region isn't surrported yet, but might be enabled in the future, avoid using
+# these variables for now
+#
+variable "aws_enable_cross_region" {
+  type        = bool
+  description = "Enable VPC Endpoint Services and VPC Endpoints to be in different regions."
+  default     = false  
+}
+variable "aws_vpc_endpoint_service_additional_regions" {
+  type        = list(string)
+  description = "A list of additional regions for the VPC Endpoint Service when aws_enable_cross_region is enabled."
+  default     = []
 }
 variable "aws_kafka_brokers" {
   type = list(object({

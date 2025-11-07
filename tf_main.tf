@@ -7,18 +7,28 @@ module "aws_networking" {
 
 	name_prefix = var.name_prefix
 
-	cc_gateway_principal_arns = confluent_gateway.aws["main"].aws_egress_private_link_gateway[*].principal_arn
+	cc_gateway_principal_arns = var.cc_use_existing_egress_gateway ? data.confluent_gateway.aws["main"].aws_egress_private_link_gateway[*].principal_arn : confluent_gateway.aws["main"].aws_egress_private_link_gateway[*].principal_arn
 
 	aws_region = var.aws_region
 	aws_vpc_id = var.aws_vpc_id
+	aws_enable_cross_region = var.aws_enable_cross_region
+	aws_vpc_endpoint_service_additional_regions = var.aws_vpc_endpoint_service_additional_regions
 	aws_kafka_brokers = var.aws_kafka_brokers	
 }
 
 #
 # AWS specific copies of Confluent Cloud resources
 #
+data "confluent_gateway" "aws" {
+	for_each = { for key, value in var.use_aws && var.cc_use_existing_egress_gateway ? [1] : [] : "main" => {} }
+	id = var.cc_egress_gateway_id
+
+	environment {
+		id = var.cc_env_id
+	}
+}
 resource "confluent_gateway" "aws" {
-	for_each = { for key, value in var.use_aws ? [1] : [] : "main" => {} }
+	for_each = { for key, value in var.use_aws && !var.cc_use_existing_egress_gateway ? [1] : [] : "main" => {} }
   display_name = "${var.name_prefix}-gw-egress"
   environment {
     id = var.cc_env_id
@@ -36,7 +46,7 @@ resource "confluent_access_point" "aws" {
 	}
 
 	gateway {
-		id = confluent_gateway.aws["main"].id
+		id = var.cc_use_existing_egress_gateway ? data.confluent_gateway.aws["main"].id : confluent_gateway.aws["main"].id
 	}
 
 	aws_egress_private_link_endpoint {
@@ -46,6 +56,8 @@ resource "confluent_access_point" "aws" {
 		# necessary for the strategy employed here.
 		enable_high_availability  = false
 	}
+
+	depends_on = [ module.aws_networking ]
 }
 resource "confluent_dns_record" "aws" {
 	for_each = { for key, value in var.use_aws ? flatten([for broker in var.aws_kafka_brokers : [for endpoint in broker.endpoints : { id = broker.id, host = endpoint.host }]]) : [] : "broker-${value.id}" => value }
@@ -57,7 +69,7 @@ resource "confluent_dns_record" "aws" {
 	}
 
 	gateway {
-		id = confluent_gateway.aws["main"].id
+		id = var.cc_use_existing_egress_gateway ? data.confluent_gateway.aws["main"].id : confluent_gateway.aws["main"].id
 	}
 
 	private_link_access_point {
