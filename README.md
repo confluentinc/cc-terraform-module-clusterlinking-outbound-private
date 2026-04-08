@@ -159,3 +159,14 @@ This raises some important things to be aware of:
 * This assumes that the machine that executes the AWS CLI command uses [credential files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
 Since there is no elegant way to conditionally execute this provisioner with a user-supplied flag, it's being kept. If there's any key issues with using this in the module, please open an issue so it can be addressed and considered for removal. 
+
+### Network Load Balancer Security Group and target Kafka Security Groups
+
+This module creates Network Load Balancer Security Groups but does not modify the target Kafka Security Group(s). The Security Groups created by this module cover path between the PrivateLink and the Network Load Balancers, not the path between the Network Load Balancers and the Kafka cluster. Ensure that Kafka cluster has adequate Security Group Rules to allow ingress from either the VPC or Subnet CIDR(s) on the specific Kafka broker listener ports (i.e. 9091, 9092, or something else).
+
+```
+Cluster Link → PL(VPCE → NLB(Listener → Target Group)) → Broker endpoints/listeners
+└────────────────────────────────────────────────────┘   └────────────────────────┘
+              covered by this module.                         handle by user. 
+```
+
