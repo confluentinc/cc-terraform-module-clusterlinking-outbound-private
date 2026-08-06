@@ -156,14 +156,6 @@ region. To attach to an existing one instead of creating a new gateway:
 | `access_point_ids` | Confluent access point IDs per broker. |
 | `dns_record_ids` | Confluent DNS record IDs per broker. |
 
-## Testing
-
-```sh
-cd modules/azure
-terraform init
-terraform test    # mock-provider tests, creates no real resources
-```
-
 ## Teardown note
 
 Deleting a Confluent access point leaves the Azure PLS private-endpoint connection lingering
