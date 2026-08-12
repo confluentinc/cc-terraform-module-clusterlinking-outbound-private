@@ -97,22 +97,13 @@ variable "aws_kafka_brokers" {
 }
 
 #
-# Variables for configuring the external network as an Azure VNet. 
-# - This doesn't yet have any affect, and is here for future use.
+# Azure and GCP are NOT configured via this root module. A single root module
+# cannot toggle cloud providers on a variable: Terraform's `required_providers`
+# is static and every referenced provider must be configured at plan time (even
+# when gated to zero instances), so a `use_azure` flag would force AWS-only
+# consumers to configure the azurerm provider, and vice versa. Instead, each
+# cloud ships as its own entry module that declares only its provider(s):
+#   - Azure -> ./modules/azure  (declares azurerm + confluent)
+#   - AWS   -> this root module (declares aws + confluent)
 #
-variable "use_azure" {
-  type        = bool
-  description = "Set module to create Azure specific resources."
-  default     = false
-}
-
-#
-# Variables for configuring the external network as a GCP VPC.
-# - This doesn't yet have any affect, and is here for future use.
-#
-variable "use_gcp" {
-  type        = bool
-  description = "Set module to create GCP specific resources."
-  default     = false
-}
 
